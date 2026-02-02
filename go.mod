@@ -3,9 +3,7 @@ module github.com/rancher/eks-operator
 go 1.25.0
 
 replace (
-	github.com/rancher/lasso => github.com/bhartigautam156/lasso v0.0.0-20260121065228-70b2c91143c4
-	github.com/rancher/rancher/norman => github.com/bhartigautam156/norman v0.0.0-20260121072704-a035b9f8f05b
-	github.com/rancher/wrangler/v3 => github.com/bhartigautam156/wrangler/v3 v3.3.2-0.20260121071658-21d254f6dd17
+	github.com/rancher/rancher/norman => github.com/bhartigautam156/norman v0.0.0-20260202103503-700f5a801d5a
 	k8s.io/client-go => k8s.io/client-go v0.35.0
 )
 
@@ -25,10 +23,10 @@ require (
 	github.com/onsi/gomega v1.38.2
 	github.com/pkg/errors v0.9.1
 	github.com/rancher-sandbox/ele-testhelpers v0.0.0-20231206161614-20a517410736
-	github.com/rancher/lasso v0.2.5
+	github.com/rancher/lasso v0.2.6
 	github.com/rancher/rancher/pkg/apis v0.0.0-20240821150307-952f563826f5
 	github.com/rancher/wrangler-api v0.6.1-0.20200427172631-a7c2f09b783e
-	github.com/rancher/wrangler/v3 v3.3.1
+	github.com/rancher/wrangler/v3 v3.3.2-rc.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/net v0.47.0
