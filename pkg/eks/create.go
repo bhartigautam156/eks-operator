@@ -545,9 +545,6 @@ func ConfigureOIDCProvider(ctx context.Context, iamService services.IAMServiceIn
 	}
 
 	oidcIssuer := clusterOutput.Cluster.Identity.Oidc.Issuer
-	if templates.IsIPv6(config.Spec.IPFamily) {
-		oidcIssuer = transformOIDC(oidcIssuer)
-	}
 
 	thumbprint, err := getIssuerThumbprint(*oidcIssuer)
 	if err != nil {

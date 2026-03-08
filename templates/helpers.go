@@ -91,33 +91,24 @@ func GetNodeInstanceRoleTemplate(region string, ipFamily *string) (string, error
 }
 
 func GetEBSCSIDriverTemplate(region string, providerID string, ipFamily *string) (string, error) {
-	awsDomain := getAWSDNSSuffix(region)
-	oidcPrefix := "oidc.eks"
-	if IsIPv6(ipFamily) {
-		awsDomain = "api.aws"
-		oidcPrefix = "oidc-eks"
-	}
 	tmpl, err := template.New("ebsrole").Parse(EBSCSIDriverTemplate)
 	if err != nil {
 		return "", err
 	}
 
-	// Create the data for the template
 	data := EBSCSIDriverTemplateData{
 		AWSArnPrefix: getArnPrefixForRegion(region),
-		AWSDomain:    awsDomain,
+		AWSDomain:    getAWSDNSSuffix(region),
 		STSDomain:    getAWSDNSSuffix(region),
-		OIDCPrefix:   oidcPrefix,
+		OIDCPrefix:   "oidc.eks",
 		Region:       region,
 		ProviderID:   providerID,
 	}
 
-	// Execute the template
 	var buf bytes.Buffer
 	if err := tmpl.Execute(&buf, data); err != nil {
 		return "", err
 	}
-
 	return buf.String(), nil
 }
 
