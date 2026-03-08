@@ -601,7 +601,11 @@ func getIssuerThumbprint(issuer string) (string, error) {
 }
 
 func createEBSCSIDriverRole(ctx context.Context, cfService services.CloudFormationServiceInterface, config *eksv1.EKSClusterConfig, oidcID string) (string, error) {
-	finalTemplate, err := templates.GetEBSCSIDriverTemplate(config.Spec.Region, oidcID)
+	finalTemplate, err := templates.GetEBSCSIDriverTemplate(
+		config.Spec.Region,
+		oidcID,
+		config.Spec.IPFamily,
+	)
 	if err != nil {
 		return "", fmt.Errorf("error getting ebs csi driver template: %v", err)
 	}

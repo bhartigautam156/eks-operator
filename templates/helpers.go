@@ -88,7 +88,11 @@ func GetNodeInstanceRoleTemplate(region string, ipFamily *string) (string, error
 	return buf.String(), nil
 }
 
-func GetEBSCSIDriverTemplate(region string, providerID string) (string, error) {
+func GetEBSCSIDriverTemplate(region string, providerID string, ipFamily *string) (string, error) {
+	awsDomain := getAWSDNSSuffix(region)
+	if IsIPv6(ipFamily) {
+		awsDomain = "api.aws" // dual-stack endpoint
+	}
 	tmpl, err := template.New("ebsrole").Parse(EBSCSIDriverTemplate)
 	if err != nil {
 		return "", err
@@ -97,7 +101,7 @@ func GetEBSCSIDriverTemplate(region string, providerID string) (string, error) {
 	// Create the data for the template
 	data := EBSCSIDriverTemplateData{
 		AWSArnPrefix: getArnPrefixForRegion(region),
-		AWSDomain:    getAWSDNSSuffix(region),
+		AWSDomain:    awsDomain,
 		Region:       region,
 		ProviderID:   providerID,
 	}
