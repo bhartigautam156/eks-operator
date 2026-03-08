@@ -564,7 +564,7 @@ Resources:
           Condition:
             StringEquals: {
               "oidc.eks.{{.Region}}.{{.AWSDomain}}/id/{{.ProviderID}}:sub": "system:serviceaccount:kube-system:ebs-csi-controller-sa",
-              "oidc.eks.{{.Region}}.{{.AWSDomain}}/id/{{.ProviderID}}:aud": "sts.{{.AWSDomain}}"
+              "oidc.eks.{{.Region}}.{{.AWSDomain}}/id/{{.ProviderID}}:aud": "sts.{{.STSDomain}}"
             }
       Path: "/"
       ManagedPolicyArns:

@@ -15,6 +15,7 @@ type EBSCSIDriverTemplateData struct {
 	Region       string
 	ProviderID   string
 	AWSDomain    string
+	STSDomain    string
 }
 
 type NodeInstanceRoleTemplateData struct {
@@ -102,6 +103,7 @@ func GetEBSCSIDriverTemplate(region string, providerID string, ipFamily *string)
 	data := EBSCSIDriverTemplateData{
 		AWSArnPrefix: getArnPrefixForRegion(region),
 		AWSDomain:    awsDomain,
+		STSDomain:    getAWSDNSSuffix(region),
 		Region:       region,
 		ProviderID:   providerID,
 	}
