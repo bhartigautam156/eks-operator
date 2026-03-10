@@ -19,12 +19,7 @@ type iamService struct {
 
 func NewIAMService(cfg aws.Config) IAMServiceInterface {
 	return &iamService{
-		svc: iam.NewFromConfig(cfg,
-			func(o *iam.Options) {
-				o.EndpointOptions.UseDualStackEndpoint =
-					aws.DualStackEndpointStateEnabled
-			},
-		),
+		svc: iam.NewFromConfig(cfg),
 	}
 }
 

@@ -14,9 +14,8 @@ type EBSCSIDriverTemplateData struct {
 	AWSArnPrefix string
 	Region       string
 	ProviderID   string
-	AWSDomain    string
+	OIDCDomain   string
 	STSDomain    string
-	OIDCPrefix   string
 }
 
 type NodeInstanceRoleTemplateData struct {
@@ -29,6 +28,27 @@ func getAWSDNSSuffix(region string) string {
 		return p.DNSSuffix()
 	}
 	return endpoints.AwsPartition().DNSSuffix()
+}
+
+func getOIDCDomain(region string, ipFamily *string) string {
+	if p, ok := endpoints.PartitionForRegion(endpoints.DefaultPartitions(), region); ok {
+		if IsIPv6(ipFamily) {
+			ep, err := p.EndpointFor("iam", region,
+				func(o *endpoints.Options) {
+					o.UseDualStackEndpoint =
+						endpoints.DualStackEndpointStateEnabled
+				})
+			if err == nil {
+				dnsSuffix := strings.TrimPrefix(
+					ep.URL,
+					"https://iam."+region+".",
+				)
+				return "oidc-eks." + region + "." + dnsSuffix
+			}
+		}
+		return "oidc.eks." + region + "." + p.DNSSuffix()
+	}
+	return "oidc.eks." + region + ".amazonaws.com"
 }
 
 func getEC2ServiceEndpoint(region string) string {
@@ -98,9 +118,8 @@ func GetEBSCSIDriverTemplate(region string, providerID string, ipFamily *string)
 
 	data := EBSCSIDriverTemplateData{
 		AWSArnPrefix: getArnPrefixForRegion(region),
-		AWSDomain:    getAWSDNSSuffix(region),
+		OIDCDomain:   getOIDCDomain(region, ipFamily),
 		STSDomain:    getAWSDNSSuffix(region),
-		OIDCPrefix:   "oidc.eks",
 		Region:       region,
 		ProviderID:   providerID,
 	}

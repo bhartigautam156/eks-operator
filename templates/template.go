@@ -559,12 +559,12 @@ Resources:
         - Effect: Allow
           Principal:
             Federated:
-            - !Sub "{{.AWSArnPrefix}}:iam::${AWS::AccountId}:oidc-provider/{{.OIDCPrefix}}.{{.Region}}.{{.AWSDomain}}/id/{{.ProviderID}}"
+            - !Sub "{{.AWSArnPrefix}}:iam::${AWS::AccountId}:oidc-provider/{{.OIDCDomain}}/id/{{.ProviderID}}"
           Action: sts:AssumeRoleWithWebIdentity
           Condition:
             StringEquals: {
-              "{{.OIDCPrefix}}.{{.Region}}.{{.AWSDomain}}/id/{{.ProviderID}}:sub": "system:serviceaccount:kube-system:ebs-csi-controller-sa",
-              "{{.OIDCPrefix}}.{{.Region}}.{{.AWSDomain}}/id/{{.ProviderID}}:aud": "sts.{{.STSDomain}}"
+              "{{.OIDCDomain}}/id/{{.ProviderID}}:sub": "system:serviceaccount:kube-system:ebs-csi-controller-sa",
+              "{{.OIDCDomain}}/id/{{.ProviderID}}:aud": "sts.{{.STSDomain}}"
             }
       Path: "/"
       ManagedPolicyArns:
